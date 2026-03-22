@@ -1,0 +1,267 @@
+/* ══════════════════════════════════════════════════
+   MealPlanner — Global Styles
+   Aesthetic: Organic editorial, warm parchment tones
+   Fonts: Playfair Display (display) + DM Sans (body)
+══════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* ── Palette ── */
+  --cream:          #faf6ef;
+  --warm-white:     #fff9f2;
+  --parchment:      #ede0cc;
+  --parchment-dark: #d9c9ae;
+
+  --terracotta:     #c1440e;
+  --terracotta-lt:  #e8602c;
+  --terracotta-bg:  #fff0ea;
+
+  --sage:           #5e8c65;
+  --sage-lt:        #8ab890;
+  --sage-bg:        #edf5ee;
+
+  --mustard:        #c4880a;
+  --mustard-lt:     #f5c842;
+  --mustard-bg:     #fff8e1;
+
+  --navy:           #283248;
+  --navy-lt:        #3d4f6e;
+  --navy-bg:        #eef0f5;
+
+  --charcoal:       #2c2416;
+  --brown-mid:      #5c4033;
+  --brown-lt:       #a07850;
+
+  --shadow-sm:      rgba(44,36,22,0.08);
+  --shadow-md:      rgba(44,36,22,0.14);
+  --shadow-lg:      rgba(44,36,22,0.25);
+
+  /* ── Typography ── */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+
+  /* ── Spacing ── */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+
+  /* ── Transitions ── */
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--charcoal);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--parchment); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--parchment-dark); }
+
+/* ── Utility ── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+}
+
+/* ── Page Fade-in ── */
+#app {
+  animation: appFade 0.4s var(--ease) both;
+}
+@keyframes appFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Modal Overlay ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 36, 22, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(5px);
+  animation: overlayIn 0.2s var(--ease) both;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-box {
+  background: var(--warm-white);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.5) inset;
+  animation: modalIn 0.25s var(--ease) both;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Form elements ── */
+.form-group { margin-bottom: 20px; }
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brown-mid);
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: var(--cream);
+  border: 1.5px solid var(--parchment);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--charcoal);
+  outline: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(193,68,14,0.1);
+}
+.form-textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 10px 20px;
+  transition: all 0.2s var(--ease);
+  white-space: nowrap;
+  outline: none;
+  text-decoration: none;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--terracotta);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--terracotta-lt); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(193,68,14,0.35); }
+
+.btn-secondary {
+  background: var(--parchment);
+  color: var(--brown-mid);
+}
+.btn-secondary:hover { background: var(--parchment-dark); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--brown-lt);
+  padding: 8px 12px;
+}
+.btn-ghost:hover { background: var(--parchment); color: var(--brown-mid); }
+
+.btn-danger {
+  background: #fee;
+  color: #c0392b;
+}
+.btn-danger:hover { background: #fcc; }
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: var(--parchment);
+  margin: 0 40px;
+}
+
+/* ── Empty State ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 16px;
+  gap: 8px;
+  color: var(--brown-lt);
+}
+.empty-state .empty-icon { font-size: 30px; }
+.empty-state .empty-text { font-size: 13px; }
+
+/* ── Badge ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ── Slide-up animation ── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Pill tags ── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.pill-breakfast { background: #fff3e0; color: #b84e00; }
+.pill-lunch     { background: #e8f5e9; color: #2a6e30; }
+.pill-dinner    { background: #e8eaf6; color: #283593; }
+.pill-snacks    { background: #fce4ec; color: #880e4f; }

@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+
+  # ─── Frontend Builder ──────────────────────────────────────────
+  frontend-build:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - frontend_dist:/app/dist
+    command: sh -c "npm install && npm run build"
+
+  # ─── Backend (serves built Vue frontend) ───────────────────────
+  backend:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - frontend_dist:/app/../frontend/dist
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+      # No DATABASE_URL needed — each user connects to their own Supabase
+    command: >
+      sh -c "pip install -r requirements.txt --quiet &&
+             uvicorn main:app --host 0.0.0.0 --port 8000"
+    depends_on:
+      frontend-build:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+volumes:
+  frontend_dist:
+  # Note: No DB volume — data lives in each user's Supabase project
