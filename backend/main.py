@@ -18,24 +18,18 @@ from typing import List, Optional
 
 import httpx
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 
 # ── App ───────────────────────────────────────────────────────────────────────
+# Vercel serverless doesn't serve Swagger UI static assets,
+# so we disable built-in docs and provide a lightweight custom page.
 app = FastAPI(
     title="MealPlanner API",
-    description=(
-        "Bulk recipe import into your own Supabase project.\n\n"
-        "## How to use\n"
-        "1. Open `/api/docs`\n"
-        "2. Find `POST /api/recipes/import`\n"
-        "3. Click **Try it out**\n"
-        "4. Paste your Supabase URL, anon key, and recipe list\n"
-        "5. Click **Execute** — recipes appear in the app immediately"
-    ),
     version="5.0.0",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
+    docs_url=None,
+    redoc_url=None,
     openapi_url="/api/openapi.json",
 )
 
@@ -132,6 +126,148 @@ def health():
         "mode":    "supabase-byod",
         "version": "5.0.0",
     }
+
+
+@app.get("/api/docs", include_in_schema=False)
+def custom_docs():
+    """Lightweight API docs page — works on Vercel serverless."""
+    html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MealPlanner API Docs</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background: #fdf6ec; color: #2c2416; padding: 32px 16px; }
+    .wrap { max-width: 680px; margin: 0 auto; }
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+    h1 span { color: #c1440e; }
+    .sub { font-size: 14px; color: #a07850; margin-bottom: 32px; }
+    .card { background: #fff9f2; border: 1.5px solid #ede0cc; border-radius: 14px;
+            padding: 24px; margin-bottom: 20px; }
+    .method { display: inline-block; background: #c1440e; color: #fff;
+              font-size: 11px; font-weight: 700; padding: 3px 10px;
+              border-radius: 6px; letter-spacing: .06em; margin-bottom: 10px; }
+    .path { font-size: 17px; font-weight: 700; font-family: monospace;
+            margin-bottom: 8px; color: #2c2416; }
+    .desc { font-size: 13.5px; color: #a07850; line-height: 1.6; margin-bottom: 16px; }
+    label { display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em;
+            text-transform: uppercase; color: #a07850; margin-bottom: 5px; }
+    textarea { width: 100%; min-height: 320px; background: #faf6ef;
+               border: 1.5px solid #ede0cc; border-radius: 10px; padding: 12px;
+               font-family: "Fira Code", "Courier New", monospace; font-size: 12px;
+               color: #2c2416; resize: vertical; outline: none; }
+    textarea:focus { border-color: #c1440e; }
+    .btn { display: inline-flex; align-items: center; gap: 8px;
+           background: #c1440e; color: #fff; border: none; border-radius: 10px;
+           padding: 11px 24px; font-size: 14px; font-weight: 600;
+           cursor: pointer; margin-top: 14px; transition: opacity .15s; }
+    .btn:hover { opacity: .88; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .result { margin-top: 16px; background: #faf6ef; border: 1.5px solid #ede0cc;
+              border-radius: 10px; padding: 14px; font-family: monospace;
+              font-size: 12px; white-space: pre-wrap; max-height: 300px;
+              overflow-y: auto; display: none; }
+    .result.show { display: block; }
+    .result.ok  { border-color: #a5d6a7; background: #e8f5e9; color: #1b5e20; }
+    .result.err { border-color: #fcc; background: #fff5f5; color: #c0392b; }
+    .health-row { display: flex; align-items: center; gap: 12px; }
+    .health-btn { background: #6b8f71; }
+    #health-out { font-size: 13px; color: #2e7d32; font-family: monospace; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Meal<span>Planner</span> API</h1>
+  <p class="sub">Bulk recipe import — paste your Supabase credentials and recipe list below</p>
+
+  <!-- Health -->
+  <div class="card">
+    <div class="method">GET</div>
+    <div class="path">/api/health</div>
+    <div class="desc">Check the API is running.</div>
+    <div class="health-row">
+      <button class="btn health-btn" onclick="checkHealth()">Check health</button>
+      <span id="health-out"></span>
+    </div>
+  </div>
+
+  <!-- Import -->
+  <div class="card">
+    <div class="method">POST</div>
+    <div class="path">/api/recipes/import</div>
+    <div class="desc">
+      Bulk-import recipes directly into your Supabase project.<br>
+      <strong>replace_all: false</strong> — updates existing by name, appends new.<br>
+      <strong>replace_all: true</strong> — wipes all recipes first, then inserts.
+    </div>
+    <label>Request Body (JSON)</label>
+    <textarea id="import-body">{
+  "supabase_url": "https://xxxxxxxxxxxx.supabase.co",
+  "supabase_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "replace_all": false,
+  "recipes": [
+    {
+      "name": "Avocado Toast",
+      "emoji": "🥑",
+      "category": "breakfast",
+      "ingredients": ["2 slices sourdough", "1 avocado", "Salt", "Chilli flakes", "Lemon juice"]
+    },
+    {
+      "name": "Pasta Arrabiata",
+      "emoji": "🍝",
+      "category": "dinner",
+      "ingredients": ["300g penne", "400g tinned tomatoes", "3 garlic cloves", "Red chilli", "Olive oil"]
+    }
+  ]
+}</textarea>
+    <button class="btn" id="import-btn" onclick="runImport()">▶ Run Import</button>
+    <pre class="result" id="import-out"></pre>
+  </div>
+</div>
+
+<script>
+  async function checkHealth() {
+    const el = document.getElementById("health-out")
+    el.textContent = "checking…"
+    try {
+      const r = await fetch("/api/health")
+      const d = await r.json()
+      el.textContent = "✓ " + JSON.stringify(d)
+    } catch(e) { el.textContent = "✗ " + e.message }
+  }
+
+  async function runImport() {
+    const btn = document.getElementById("import-btn")
+    const out = document.getElementById("import-out")
+    btn.disabled = true
+    btn.textContent = "⏳ Running…"
+    out.className = "result show"
+    out.textContent = "Sending request…"
+    try {
+      const body = document.getElementById("import-body").value
+      JSON.parse(body)  // validate JSON first
+      const r = await fetch("/api/recipes/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: body,
+      })
+      const d = await r.json()
+      out.className = r.ok ? "result show ok" : "result show err"
+      out.textContent = JSON.stringify(d, null, 2)
+    } catch(e) {
+      out.className = "result show err"
+      out.textContent = "Error: " + e.message
+    }
+    btn.disabled = false
+    btn.textContent = "▶ Run Import"
+  }
+</script>
+</body>
+</html>"""
+    return HTMLResponse(html)
 
 
 # ── Bulk import ───────────────────────────────────────────────────────────────
