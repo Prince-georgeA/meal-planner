@@ -288,5 +288,5 @@ async def import_recipes(payload: ImportPayload):
     return ImportResult(added=added, updated=updated, total=len(results), recipes=results)
 
 
-# Vercel serverless handler
-handler = Mangum(app)
+# Vercel serverless handler — lifespan="off" prevents startup crash
+handler = Mangum(app, lifespan="off")
