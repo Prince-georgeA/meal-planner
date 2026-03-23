@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Week-by-week meal planner — plan meals, track ingredients, share shopping lists" />
+
+    <!-- PWA / Home Screen (same approach as focus-timer) -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MealPlanner" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#c1440e" />
+
+    <!-- apple-touch-icon as inline base64 PNG — works without file serving -->
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAFcklEQVR4nO3dO3bUShRG4WovnOLYg2AAJHYCpMyAwTEDp+AEJwzAgyA2KQEELHnJbUn1OkdV9Wt/4X1I7a59DyW12vcUGvrx4e3flueHj9v736dW597txMR7bHtF7noSIsYSz7hdDkzISOERtukBCRklLMM2ORAhw4JF2Be1ByBmWLFoqSpoYoa12qaKRjwhYw8lW5DsCU3M2EtJa1lBEzP2lttcctDEjFZy2ksKmpjRWmqD0aCJGb1IabH6PjTQk82gmc7oTazJ1aCJGb3aanMxaGJG79YaZQ8NKa+CZjpjFEutMqEh5UXQTGeM5rxZJjSkPAfNdMao5u0yoSGFoCHlIgS2Gxjf1DATGlIIGlIIGlIIGlJOXBBCCRMaUggaUggaUggaUggaUggaUt60fgG9uPn+9OqvPXy8OtxxR8eEhhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhR+4TmkMKEhhaAhhaAhxf23j97cPXqfAoN5+PzO7dhuF4WEjBiPsF22HMSMFB6dmAdNzMhh3Ytp0MSMEpbdcJcDUsyCZjqjhlU/TGhIIWhIIWhIIWhIIWhIIWhIIWhIIWhIMQva85FA6LPqhwkNKaZBM6VRwrIb8wlN1Mhh3YvLloOokcKjE9OvYPHEHUpZxV0ddEnEqS/+/ddv2cfGPn5++ZT0z3n2saQ4aItpvPbCCXkca2F79rGlaA9ttbVYOg4xj2VpvTz7iMkO2nqfPD8eMY9pvm6efaTI2nLEDr71R0Ts3/3z9Cv1ZaBTl1fXm3+/po/U7Udy0FsnzNnrbB2HqMe1FbNVHynHSQp67SQ1V6NrxyTq8azF7NFH7JjFH6zU3jfkwxdtrfqIBu31YcnaBWBsH4a+rK2X1wV+rMeiCW01XdleaLJa193uQ9fi9twxtFhn998PHQIBH9n52qd+ZF6KB/whhaAhpemzHNzR0GS1ri7Pcux9v5g7H2PZe73cPlipndJMZ22161vaV1LQa/9V3Nw9Zp/48up69YdlOo9pbd221nrNVlMpu4XkCR17UioWduyHI+axba1fStixhsyftpuf2Box6/DYSuZcx2Xvoa0vEolZi/V65vbGsxww1/JZjibf+ibk4yjZgjT51vcSvo2CLVbfatni9v/6nuPhJEx4OAnIQNCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQssvDSUt4YEmf94NIS5pN6BY/LPbTan2bbjmIWlPLdW2+hyZqLa3Xs3nQIbR/E2Cjh3XsIugQ+ngzUK6X9esm6BD6eVOQp6d16yroEPp6cxDX23o1uw+dgnvV/eot5El3E3qu1zft6Hpel64n9BzTur2eQ550PaHnRngzlY3y/g8zoeeY1vsZJeTJkEFPCNvPaCFPhg56Qth2Rg15IhH0hLDLjR7yRCroCWGnUwl5Ihn0HHG/phbxnHzQc0eOWzniuUMFfU458KMEfO7QQZ8bOfCjBnyOoCN6jJx41xF0JY/gCbbcKYQQiBoKbu9/n4Z5OAlIQdCQQtCQQtCQchHC/8106xcC1JgaZkJDCkFDynPQbDswqnm7TGhIeRE0UxqjOW+WCQ0pr4JmSmMUS60yoSFlMWimNHq31ujqhCZq9Gqrzc0tB1GjN7Em2UNDSjRopjR6kdJi0oQmarSW2mDyloOo0UpOe1l7aKLG3nKby74oJGrspaS1qjj59QfwUDM0q27bMa1hrbap6vvQRA0rFi2ZxsgWBCUsh6LLdCVspPD40911u0DYWOK5Td1t/0vcx7bXtVbTCzoi19TyRsE/xM4J8zs/hxIAAAAASUVORK5CYII=" />
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAFcklEQVR4nO3dO3bUShRG4WovnOLYg2AAJHYCpMyAwTEDp+AEJwzAgyA2KQEELHnJbUn1OkdV9Wt/4X1I7a59DyW12vcUGvrx4e3flueHj9v736dW597txMR7bHtF7noSIsYSz7hdDkzISOERtukBCRklLMM2ORAhw4JF2Be1ByBmWLFoqSpoYoa12qaKRjwhYw8lW5DsCU3M2EtJa1lBEzP2lttcctDEjFZy2ksKmpjRWmqD0aCJGb1IabH6PjTQk82gmc7oTazJ1aCJGb3aanMxaGJG79YaZQ8NKa+CZjpjFEutMqEh5UXQTGeM5rxZJjSkPAfNdMao5u0yoSGFoCHlIgS2Gxjf1DATGlIIGlIIGlIIGlJOXBBCCRMaUggaUggaUggaUggaUggaUt60fgG9uPn+9OqvPXy8OtxxR8eEhhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhR+4TmkMKEhhaAhhaAhxf23j97cPXqfAoN5+PzO7dhuF4WEjBiPsF22HMSMFB6dmAdNzMhh3Ytp0MSMEpbdcJcDUsyCZjqjhlU/TGhIIWhIIWhIIWhIIWhIIWhIIWhIIWhIMQva85FA6LPqhwkNKaZBM6VRwrIb8wlN1Mhh3YvLloOokcKjE9OvYPHEHUpZxV0ddEnEqS/+/ddv2cfGPn5++ZT0z3n2saQ4aItpvPbCCXkca2F79rGlaA9ttbVYOg4xj2VpvTz7iMkO2nqfPD8eMY9pvm6efaTI2nLEDr71R0Ts3/3z9Cv1ZaBTl1fXm3+/po/U7Udy0FsnzNnrbB2HqMe1FbNVHynHSQp67SQ1V6NrxyTq8azF7NFH7JjFH6zU3jfkwxdtrfqIBu31YcnaBWBsH4a+rK2X1wV+rMeiCW01XdleaLJa193uQ9fi9twxtFhn998PHQIBH9n52qd+ZF6KB/whhaAhpemzHNzR0GS1ri7Pcux9v5g7H2PZe73cPlipndJMZ22161vaV1LQa/9V3Nw9Zp/48up69YdlOo9pbd221nrNVlMpu4XkCR17UioWduyHI+axba1fStixhsyftpuf2Box6/DYSuZcx2Xvoa0vEolZi/V65vbGsxww1/JZjibf+ibk4yjZgjT51vcSvo2CLVbfatni9v/6nuPhJEx4OAnIQNCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQssvDSUt4YEmf94NIS5pN6BY/LPbTan2bbjmIWlPLdW2+hyZqLa3Xs3nQIbR/E2Cjh3XsIugQ+ngzUK6X9esm6BD6eVOQp6d16yroEPp6cxDX23o1uw+dgnvV/eot5El3E3qu1zft6Hpel64n9BzTur2eQ550PaHnRngzlY3y/g8zoeeY1vsZJeTJkEFPCNvPaCFPhg56Qth2Rg15IhH0hLDLjR7yRCroCWGnUwl5Ihn0HHG/phbxnHzQc0eOWzniuUMFfU458KMEfO7QQZ8bOfCjBnyOoCN6jJx41xF0JY/gCbbcKYQQiBoKbu9/n4Z5OAlIQdCQQtCQQtCQchHC/8106xcC1JgaZkJDCkFDynPQbDswqnm7TGhIeRE0UxqjOW+WCQ0pr4JmSmMUS60yoSFlMWimNHq31ujqhCZq9Gqrzc0tB1GjN7Em2UNDSjRopjR6kdJi0oQmarSW2mDyloOo0UpOe1l7aKLG3nKby74oJGrspaS1qjj59QfwUDM0q27bMa1hrbap6vvQRA0rFi2ZxsgWBCUsh6LLdCVspPD40911u0DYWOK5Td1t/0vcx7bXtVbTCzoi19TyRsE/xM4J8zs/hxIAAAAASUVORK5CYII=" />
+
+    <title>MealPlanner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <script>
+      // Inject web app manifest dynamically (same technique as focus-timer)
+      // This is the most reliable way to register icons for iOS home screen
+      (function() {
+        var iconB64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAFcklEQVR4nO3dO3bUShRG4WovnOLYg2AAJHYCpMyAwTEDp+AEJwzAgyA2KQEELHnJbUn1OkdV9Wt/4X1I7a59DyW12vcUGvrx4e3flueHj9v736dW597txMR7bHtF7noSIsYSz7hdDkzISOERtukBCRklLMM2ORAhw4JF2Be1ByBmWLFoqSpoYoa12qaKRjwhYw8lW5DsCU3M2EtJa1lBEzP2lttcctDEjFZy2ksKmpjRWmqD0aCJGb1IabH6PjTQk82gmc7oTazJ1aCJGb3aanMxaGJG79YaZQ8NKa+CZjpjFEutMqEh5UXQTGeM5rxZJjSkPAfNdMao5u0yoSGFoCHlIgS2Gxjf1DATGlIIGlIIGlIIGlJOXBBCCRMaUggaUggaUggaUggaUggaUt60fgG9uPn+9OqvPXy8OtxxR8eEhhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhSChhR+4TmkMKEhhaAhhaAhxf23j97cPXqfAoN5+PzO7dhuF4WEjBiPsF22HMSMFB6dmAdNzMhh3Ytp0MSMEpbdcJcDUsyCZjqjhlU/TGhIIWhIIWhIIWhIIWhIIWhIIWhIIWhIMQva85FA6LPqhwkNKaZBM6VRwrIb8wlN1Mhh3YvLloOokcKjE9OvYPHEHUpZxV0ddEnEqS/+/ddv2cfGPn5++ZT0z3n2saQ4aItpvPbCCXkca2F79rGlaA9ttbVYOg4xj2VpvTz7iMkO2nqfPD8eMY9pvm6efaTI2nLEDr71R0Ts3/3z9Cv1ZaBTl1fXm3+/po/U7Udy0FsnzNnrbB2HqMe1FbNVHynHSQp67SQ1V6NrxyTq8azF7NFH7JjFH6zU3jfkwxdtrfqIBu31YcnaBWBsH4a+rK2X1wV+rMeiCW01XdleaLJa193uQ9fi9twxtFhn998PHQIBH9n52qd+ZF6KB/whhaAhpemzHNzR0GS1ri7Pcux9v5g7H2PZe73cPlipndJMZ22161vaV1LQa/9V3Nw9Zp/48up69YdlOo9pbd221nrNVlMpu4XkCR17UioWduyHI+axba1fStixhsyftpuf2Box6/DYSuZcx2Xvoa0vEolZi/V65vbGsxww1/JZjibf+ibk4yjZgjT51vcSvo2CLVbfatni9v/6nuPhJEx4OAnIQNCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQQtCQssvDSUt4YEmf94NIS5pN6BY/LPbTan2bbjmIWlPLdW2+hyZqLa3Xs3nQIbR/E2Cjh3XsIugQ+ngzUK6X9esm6BD6eVOQp6d16yroEPp6cxDX23o1uw+dgnvV/eot5El3E3qu1zft6Hpel64n9BzTur2eQ550PaHnRngzlY3y/g8zoeeY1vsZJeTJkEFPCNvPaCFPhg56Qth2Rg15IhH0hLDLjR7yRCroCWGnUwl5Ihn0HHG/phbxnHzQc0eOWzniuUMFfU458KMEfO7QQZ8bOfCjBnyOoCN6jJx41xF0JY/gCbbcKYQQiBoKbu9/n4Z5OAlIQdCQQtCQQtCQchHC/8106xcC1JgaZkJDCkFDynPQbDswqnm7TGhIeRE0UxqjOW+WCQ0pr4JmSmMUS60yoSFlMWimNHq31ujqhCZq9Gqrzc0tB1GjN7Em2UNDSjRopjR6kdJi0oQmarSW2mDyloOo0UpOe1l7aKLG3nKby74oJGrspaS1qjj59QfwUDM0q27bMa1hrbap6vvQRA0rFi2ZxsgWBCUsh6LLdCVspPD40911u0DYWOK5Td1t/0vcx7bXtVbTCzoi19TyRsE/xM4J8zs/hxIAAAAASUVORK5CYII=";
+        var manifest = {
+          name: "MealPlanner",
+          short_name: "MealPlanner",
+          description: "Week-by-week meal planner",
+          start_url: "/",
+          display: "standalone",
+          background_color: "#c1440e",
+          theme_color: "#c1440e",
+          orientation: "portrait",
+          icons: [
+            { src: iconB64, sizes: "180x180", type: "image/png", purpose: "any maskable" }
+          ]
+        };
+        var blob = new Blob([JSON.stringify(manifest)], { type: "application/manifest+json" });
+        var url  = URL.createObjectURL(blob);
+        var link = document.createElement("link");
+        link.rel  = "manifest";
+        link.href = url;
+        document.head.appendChild(link);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
