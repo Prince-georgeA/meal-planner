@@ -151,6 +151,8 @@ function handleAddFoodRequest({ weekId, category }) {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  /* Push content below iOS status bar when running as PWA (black-translucent) */
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 /* ── Background ── */
