@@ -17,9 +17,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
-from mangum import Mangum
+from a2wsgi import ASGIMiddleware
 
-app = FastAPI(
+_asgi_app = FastAPI(
     title="MealPlanner API",
     version="5.0.0",
     docs_url=None,
@@ -27,7 +27,7 @@ app = FastAPI(
     openapi_url=None,
 )
 
-app.add_middleware(
+_asgi_app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
@@ -77,13 +77,13 @@ class ImportResult(BaseModel):
 
 
 # ── Health ────────────────────────────────────────────────────────────────────
-@app.get("/health")
+@_asgi_app.get("/health")
 def health():
     return {"status": "ok", "mode": "supabase-byod", "version": "5.0.0"}
 
 
 # ── Custom docs page ──────────────────────────────────────────────────────────
-@app.get("/docs", include_in_schema=False)
+@_asgi_app.get("/docs", include_in_schema=False)
 def custom_docs():
     html = """<!DOCTYPE html>
 <html lang="en">
@@ -218,7 +218,7 @@ async function runImport(){
 
 
 # ── Bulk import ───────────────────────────────────────────────────────────────
-@app.post("/recipes/import", response_model=ImportResult)
+@_asgi_app.post("/recipes/import", response_model=ImportResult)
 async def import_recipes(payload: ImportPayload):
     """
     Bulk-import recipes into the user's own Supabase project.
@@ -288,5 +288,6 @@ async def import_recipes(payload: ImportPayload):
     return ImportResult(added=added, updated=updated, total=len(results), recipes=results)
 
 
-# Vercel serverless handler — lifespan="off" prevents startup crash
-handler = Mangum(app, lifespan="off")
+# Vercel requires a WSGI callable named `app`
+# a2wsgi wraps FastAPI (ASGI) into WSGI
+app = ASGIMiddleware(_asgi_app)
