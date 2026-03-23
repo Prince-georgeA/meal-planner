@@ -77,13 +77,13 @@ class ImportResult(BaseModel):
 
 
 # ── Health ────────────────────────────────────────────────────────────────────
-@_asgi_app.get("/health")
+@_asgi_app.get("/api/health")
 def health():
     return {"status": "ok", "mode": "supabase-byod", "version": "5.0.0"}
 
 
 # ── Custom docs page ──────────────────────────────────────────────────────────
-@_asgi_app.get("/docs", include_in_schema=False)
+@_asgi_app.get("/api/docs", include_in_schema=False)
 def custom_docs():
     html = """<!DOCTYPE html>
 <html lang="en">
@@ -218,7 +218,7 @@ async function runImport(){
 
 
 # ── Bulk import ───────────────────────────────────────────────────────────────
-@_asgi_app.post("/recipes/import", response_model=ImportResult)
+@_asgi_app.post("/api/recipes/import", response_model=ImportResult)
 async def import_recipes(payload: ImportPayload):
     """
     Bulk-import recipes into the user's own Supabase project.
