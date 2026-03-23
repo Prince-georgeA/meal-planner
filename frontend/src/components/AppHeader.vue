@@ -50,9 +50,6 @@ defineEmits(['add-recipe', 'go-home', 'manage-stores', 'disconnect'])
   z-index: 100;
   background: var(--charcoal);
   box-shadow: 0 2px 20px rgba(44,36,22,0.3);
-  /* Extend background into the iOS status bar area when running as PWA */
-  padding-top: env(safe-area-inset-top, 0px);
-  margin-top: calc(-1 * env(safe-area-inset-top, 0px));
 }
 
 .header-inner {
