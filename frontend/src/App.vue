@@ -58,6 +58,11 @@
           @close="addFoodContext = null"
         />
         <StoresModal v-if="showStores" @close="showStores = false" />
+      <SettingsPanel
+        :open="showSettings"
+        @close="showSettings = false"
+        @disconnected="handleDisconnect"
+      />
         <ToastNotification />
       </Teleport>
     </template>
@@ -87,13 +92,14 @@ const currentView   = ref('home')
 const activeWeekId  = ref(null)
 const showAddRecipe = ref(false)
 const showStores    = ref(false)
+const showSettings  = ref(false)
 const addFoodContext = ref(null)
 
 const activeWeek = computed(() =>
   store.weeks.find(w => w.id === activeWeekId.value) || null
 )
 const hasOpenModal = computed(() =>
-  showAddRecipe.value || !!addFoodContext.value || showStores.value
+  showAddRecipe.value || !!addFoodContext.value || showStores.value || showSettings.value
 )
 
 onMounted(async () => {
@@ -151,8 +157,6 @@ function handleAddFoodRequest({ weekId, category }) {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  /* Push content below iOS status bar when running as PWA (black-translucent) */
-  padding-top: env(safe-area-inset-top, 0px);
 }
 
 /* ── Background ── */
