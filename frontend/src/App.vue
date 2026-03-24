@@ -27,6 +27,7 @@
         :in-week="currentView === 'week'"
         :week-label="activeWeek?.label"
         @disconnect="handleDisconnect"
+        @open-settings="showSettings = true" 
       />
 
       <!-- Views -->
