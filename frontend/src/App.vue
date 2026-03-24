@@ -83,6 +83,7 @@ import WeekDetailView   from './components/WeekDetailView.vue'
 import AddRecipeModal   from './components/AddRecipeModal.vue'
 import AddFoodModal     from './components/AddFoodModal.vue'
 import StoresModal      from './components/StoresModal.vue'
+import SettingsPanel   from './components/SettingsPanel.vue'
 import ToastNotification from './components/ToastNotification.vue'
 
 const store = useMealStore()
