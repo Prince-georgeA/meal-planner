@@ -336,6 +336,12 @@ export const useMealStore = defineStore('meal', () => {
       const t = new Date(dateTo);   t.setHours(0,0,0,0)
       week.dateFrom = f.getTime(); week.dateTo = t.getTime()
       updates.date_from = week.dateFrom; updates.date_to = week.dateTo
+      // Auto-derive the human-readable display string from the date range
+      // so WeekCard shows it even when `dates` param is undefined
+      if (dates === undefined) {
+        week.dates = _formatDateRange(f, t)
+        updates.dates = week.dates
+      }
     }
     withSync(() => sbUpdate('weeks', weekId, updates))
     showToast('Week updated')
@@ -517,6 +523,35 @@ export const useMealStore = defineStore('meal', () => {
       showToast(`"${s.name}" added`)
       return s
     })
+  }
+
+  async function updateStore(storeId, payload) {
+    const idx = stores.value.findIndex(s => s.id === storeId)
+    if (idx === -1) return
+    stores.value[idx] = { ...stores.value[idx], ...payload }
+    withSync(() =>
+      db().from('stores').update(payload).eq('id', storeId)
+        .then(({ error }) => { if (error) throw error })
+    )
+    showToast(`"${payload.name}" updated`)
+  }
+
+  async function reassignStore(fromId, toId) {
+    // Move all recipeStores entries from fromId to toId
+    for (const recipeId of Object.keys(recipeStores.value)) {
+      for (const [idx, sid] of Object.entries(recipeStores.value[recipeId])) {
+        if (sid === fromId) {
+          recipeStores.value[recipeId][idx] = toId
+          withSync(() =>
+            db().from('ingredient_stores')
+              .update({ store_id: toId })
+              .eq('recipe_id', recipeId).eq('ing_index', idx)
+              .eq('store_id', fromId)
+              .then(({ error }) => { if (error) throw error })
+          )
+        }
+      }
+    }
   }
 
   async function deleteStore(storeId) {
@@ -799,7 +834,7 @@ export const useMealStore = defineStore('meal', () => {
     getCheckedCountForWeek, getCheckedCountForFood,
 
     // Stores
-    addStore, deleteStore, storeUsageCount,
+    addStore, updateStore, deleteStore, reassignStore, storeUsageCount,
     resolveIngStore, setIngStore, setRecipeIngStore,
 
     // Comments
