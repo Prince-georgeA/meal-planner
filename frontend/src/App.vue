@@ -24,10 +24,9 @@
         @add-recipe="showAddRecipe = true"
         @go-home="goHome"
         @manage-stores="showStores = true"
+        @open-settings="showSettings = true"
         :in-week="currentView === 'week'"
         :week-label="activeWeek?.label"
-        @disconnect="handleDisconnect"
-        @open-settings="showSettings = true" 
       />
 
       <!-- Views -->
