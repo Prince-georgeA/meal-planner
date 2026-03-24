@@ -25,8 +25,8 @@
         <button class="btn-stores" @click="$emit('manage-stores')" aria-label="Manage stores">
           🏪 <span class="btn-text">Stores</span>
         </button>
-        <button class="btn-disconnect" @click="$emit('disconnect')" title="Disconnect database" aria-label="Disconnect">
-          🔌
+        <button class="btn-settings" @click="$emit('open-settings')" title="Settings" aria-label="Settings">
+          ⚙️
         </button>
       </div>
 
@@ -40,7 +40,7 @@ defineProps({
   weekLabel:  { type: String,  default: '' },
 })
 
-defineEmits(['add-recipe', 'go-home', 'manage-stores', 'disconnect'])
+defineEmits(['add-recipe', 'go-home', 'manage-stores', 'open-settings'])
 </script>
 
 <style scoped>
@@ -50,6 +50,8 @@ defineEmits(['add-recipe', 'go-home', 'manage-stores', 'disconnect'])
   z-index: 100;
   background: var(--charcoal);
   box-shadow: 0 2px 20px rgba(44,36,22,0.3);
+  /* Extend header behind iOS status bar — fills the transparent area */
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 .header-inner {
@@ -175,24 +177,23 @@ defineEmits(['add-recipe', 'go-home', 'manage-stores', 'disconnect'])
 
 .btn-icon { font-size: 15px; }
 
-.btn-disconnect {
+.btn-settings {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 34px; height: 34px;
   background: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.7);
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.2s;
   flex-shrink: 0;
 }
-.btn-disconnect:hover {
-  background: rgba(255,80,80,0.25);
+.btn-settings:hover {
+  background: rgba(255,255,255,0.18);
   color: white;
-  border-color: rgba(255,100,100,0.4);
 }
 
 @media (max-width: 500px) {
